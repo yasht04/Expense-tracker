@@ -4,20 +4,11 @@ let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 const toggleButton = document.getElementById('toggle-dark-mode');
 const body = document.body;
 const container = document.querySelector('.container');
+const buttons = document.querySelectorAll('button');
 
-toggleButton.addEventListener('change', () => {
-    const isDarkMode = body.classList.toggle('dark-mode');
-    container.classList.toggle('dark-mode');
-
-    // Toggle dark mode on inputs and buttons
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(input => input.classList.toggle('dark-mode'));
-
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-    // Update button colors based on mode
-    if (isDarkMode) {
+// Function to set button colors based on the mode
+function setButtonColors() {
+    if (body.classList.contains('dark-mode')) {
         buttons.forEach(button => {
             button.style.backgroundColor = '#e84c3d'; // Orange for dark mode
         });
@@ -26,7 +17,21 @@ toggleButton.addEventListener('change', () => {
             button.style.backgroundColor = '#007bff'; // Blue for light mode
         });
     }
+}
+
+// Event listener for dark mode toggle
+toggleButton.addEventListener('change', () => {
+    const isDarkMode = body.classList.toggle('dark-mode');
+    container.classList.toggle('dark-mode');
+    setButtonColors(); // Update button colors
+
+    // Toggle dark mode on inputs
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => input.classList.toggle('dark-mode'));
 });
+
+// Set initial button colors on page load
+setButtonColors();
 
 // The rest of your JavaScript remains unchanged
 document.getElementById('expense-form').addEventListener('submit', function(event) {

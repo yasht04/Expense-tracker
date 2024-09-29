@@ -1,5 +1,5 @@
 body {
-    font-family: "Times New Roman", Times, serif;
+    font-family: trebuchet ms, helvetica, sans-serif;
     margin: 0;
     padding: 20px;
     transition: background 0.3s, color 0.3s;
@@ -36,8 +36,12 @@ body:not(.dark-mode) {
 
 h1, h2, h3 {
     text-align: center;
-    color: #f8c94c; /* Gold accent color */
+    color: #000033;
+    /* color: #133c7a; */
     margin-bottom: 20px;
+}
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+    color: #f8c94c; /* Gold for dark mode */
 }
 
 form, #filter-category {
@@ -81,11 +85,11 @@ body.dark-mode button:hover {
 
 /* Light Mode Button Styles */
 body.light-mode button {
-    background: #007bff; /* Blue for light mode */
+    background: #3a7de0; /* Blue for light mode */
 }
 
 body.light-mode button:hover {
-    background: #0056b3; /* Darker blue on hover */
+    background: #133c7a;
 }
 
 ul {
