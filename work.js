@@ -1,0 +1,108 @@
+let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+
+// Dark mode toggle functionality
+const toggleButton = document.getElementById('toggle-dark-mode');
+const body = document.body;
+const container = document.querySelector('.container');
+
+toggleButton.addEventListener('change', () => {
+    const isDarkMode = body.classList.toggle('dark-mode');
+    container.classList.toggle('dark-mode');
+
+    // Toggle dark mode on inputs and buttons
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => input.classList.toggle('dark-mode'));
+
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.toggle('dark-mode'));
+
+    // Update button colors based on mode
+    if (isDarkMode) {
+        buttons.forEach(button => {
+            button.style.backgroundColor = '#e84c3d'; // Orange for dark mode
+        });
+    } else {
+        buttons.forEach(button => {
+            button.style.backgroundColor = '#007bff'; // Blue for light mode
+        });
+    }
+});
+
+// The rest of your JavaScript remains unchanged
+document.getElementById('expense-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const expenseName = document.getElementById('expense-name').value;
+    const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
+    const expenseDate = document.getElementById('expense-date').value;
+    const expenseCategory = document.getElementById('expense-category').value;
+
+    if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
+        const expense = { name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory };
+        addExpense(expense);
+        updateTotal();
+        displaySummary();
+        this.reset();
+    }
+});
+
+document.getElementById('filter-button').addEventListener('click', function() {
+    const selectedCategory = document.getElementById('filter-category').value;
+    displayExpenses(selectedCategory);
+});
+
+function addExpense(expense) {
+    expenses.push(expense);
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+    displayExpenses();
+}
+
+function displayExpenses(filter = '') {
+    const expenseList = document.getElementById('expense-list');
+    expenseList.innerHTML = '';
+
+    const filteredExpenses = filter ? expenses.filter(exp => exp.category === filter) : expenses;
+
+    filteredExpenses.forEach((expense, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `${expense.name} (₹${expense.amount.toFixed(2)}) - ${expense.category} on ${new Date(expense.date).toLocaleDateString()}
+                        <button onclick="removeExpense(${index})">Remove</button>`;
+        expenseList.appendChild(li);
+    });
+}
+
+function removeExpense(index) {
+    expenses.splice(index, 1);
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+    displayExpenses();
+    updateTotal();
+    displaySummary();
+}
+
+function updateTotal() {
+    const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    document.getElementById('total-amount').innerText = total.toFixed(2);
+}
+
+function displaySummary() {
+    const summaryDiv = document.getElementById('expense-summary');
+    summaryDiv.innerHTML = '';
+
+    const summary = expenses.reduce((acc, expense) => {
+        if (!acc[expense.category]) {
+            acc[expense.category] = 0;
+        }
+        acc[expense.category] += expense.amount;
+        return acc;
+    }, {});
+
+    for (const category in summary) {
+        const p = document.createElement('p');
+        p.innerText = `${category}: ₹${summary[category].toFixed(2)}`;
+        summaryDiv.appendChild(p);
+    }
+}
+
+// Initial display
+displayExpenses();
+updateTotal();
+displaySummary();

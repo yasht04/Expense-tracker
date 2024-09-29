@@ -1,0 +1,186 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 0;
+    padding: 20px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light text */
+}
+
+.container.dark-mode {
+    background: #2c2c2c; /* Darker container */
+}
+
+/* Light Mode Styles */
+body:not(.dark-mode) {
+    background-color: #e9ecef; /* Light background */
+    color: #000; /* Black text */
+}
+
+.container:not(.dark-mode) {
+    background: white; /* White container */
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #f8c94c; /* Gold accent color */
+    margin-bottom: 20px;
+}
+
+form, #filter-category {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+input, select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 23%;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #f8c94c; /* Gold focus border */
+}
+
+/* Common Button Styles */
+button {
+    padding: 14px;
+    color: white; /* Text color */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 10%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Dark Mode Button Styles */
+body.dark-mode button {
+    background: #e84c3d; /* Orange for dark mode */
+}
+
+body.dark-mode button:hover {
+    background: #c0392b; /* Darker orange on hover */
+}
+
+/* Light Mode Button Styles */
+body.light-mode button {
+    background: #007bff; /* Blue for light mode */
+}
+
+body.light-mode button:hover {
+    background: #0056b3; /* Darker blue on hover */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.3s;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+li button {
+    background-color: #dc3545; /* Red for delete buttons */
+    border-radius: 5px;
+}
+
+li button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+#expense-summary {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Toggle Styles */
+/* Existing styles remain unchanged... */
+
+/* Toggle Styles */
+.toggle {
+    position: relative; /* Positioning context for the slider */
+    display: flex; /* Align items properly */
+    justify-content: flex-end; /* Align to the right */
+    margin-bottom: 20px; /* Space below */
+}
+
+.toggle input {
+    display: none; /* Hide the checkbox */
+}
+
+.slider {
+    width: 65px;
+    height: 34px;
+    background-color: #ccc;
+    border-radius: 34px;
+    position: relative;
+    display: flex; /* Flexbox for icons */
+    align-items: center; /* Center vertically */
+    transition: background-color 0.4s;
+    overflow: hidden; /* Hide overflow for the icons */
+}
+
+.sun,
+.moon {
+    font-size: 20px; /* Icon size */
+    transition: opacity 0.3s, transform 0.3s;
+    color: yellow; /* Color for sun */
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.8); /* Glow effect for sun */
+    display: flex; /* Ensure they are flex containers */
+    align-items: center; /* Center icons vertically */
+}
+
+.moon {
+    color: #f8c94c; /* Color for moon */
+    text-shadow: 0 0 10px rgba(248, 201, 76, 0.8); /* Glow effect for moon */
+    opacity: 0; /* Initially hidden */
+}
+
+.sun {
+    margin-left: 5px; /* Adjusted margin to move sun slightly left */
+}
+
+.moon {
+    margin-left: auto; /* Position the moon to the right */
+    margin-right: 10px; /* Space the moon from the edge */
+}
+
+input:checked + .slider {
+    background-color: #007bff; /* Blue when checked */
+}
+
+input:checked + .slider .sun {
+    opacity: 0; /* Hide sun when dark mode is on */
+}
+
+input:checked + .slider .moon {
+    opacity: 1; /* Show moon when dark mode is on */
+}
