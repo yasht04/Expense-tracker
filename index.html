@@ -18,9 +18,7 @@
                 </span>
             </label>
         </div>
-        <!-- Your existing form and other elements follow... -->
-        
-        
+
         <form id="expense-form">
             <input type="text" id="expense-name" placeholder="Expense Name" required>
             <input type="number" id="expense-amount" placeholder="Amount" required>
@@ -36,17 +34,19 @@
             <button type="submit">Add Expense</button>
         </form>
         
-        <h2>Filter Expenses</h2>
-        <select id="filter-category">
-            <option value="">All Categories</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Utilities">Utilities</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Other">Other</option>
-        </select>
-        <button id="filter-button">Filter</button>
-        
+        <div id="filter-section" style="display: none;">
+            <h2>Filter Expenses</h2>
+            <select id="filter-category">
+                <option value="">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Other">Other</option>
+            </select>
+            <button id="filter-button">Filter</button>
+        </div>
+
         <h2>Expenses</h2>
         <ul id="expense-list"></ul>
         
@@ -55,6 +55,5 @@
         <div id="expense-summary"></div>
     </div>
     <script src="work.js"></script>
-</div>
 </body>
 </html>

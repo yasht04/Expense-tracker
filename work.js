@@ -33,7 +33,6 @@ toggleButton.addEventListener('change', () => {
 // Set initial button colors on page load
 setButtonColors();
 
-// The rest of your JavaScript remains unchanged
 document.getElementById('expense-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const expenseName = document.getElementById('expense-name').value;
@@ -67,10 +66,16 @@ function displayExpenses(filter = '') {
 
     const filteredExpenses = filter ? expenses.filter(exp => exp.category === filter) : expenses;
 
+    if (filteredExpenses.length > 0) {
+        document.getElementById('filter-section').style.display = 'block'; // Show filter section
+    } else {
+        document.getElementById('filter-section').style.display = 'none'; // Hide filter section
+    }
+
     filteredExpenses.forEach((expense, index) => {
         const li = document.createElement('li');
         li.innerHTML = `${expense.name} (₹${expense.amount.toFixed(2)}) - ${expense.category} on ${new Date(expense.date).toLocaleDateString()}
-                        <button onclick="removeExpense(${index})">Remove</button>`;
+                        <button style:"color:red" onclick="removeExpense(${index})">Remove</button>`;
         expenseList.appendChild(li);
     });
 }
