@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Expense Tracker</h1>
+        <div class="banner">
+            <h2>Expense Tracker</h2>
+            <p>Keep track of your expenses and manage your budget effectively.</p>
+        </div>
         <div class="toggle">
             <label>
                 <input type="checkbox" id="toggle-dark-mode">
@@ -53,7 +57,11 @@
         <h3>Total Expense: ₹<span id="total-amount">0</span></h3>
         <h3>Expense Summary</h3>
         <div id="expense-summary"></div>
+        
+        <h3 id="spending-trends-heading">Spending Trends</h3>
+<canvas id="expense-chart" width="400" height="200"></canvas>
     </div>
     <script src="work.js"></script>
+    
 </body>
 </html>
