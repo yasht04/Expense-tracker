@@ -43,11 +43,26 @@ document.getElementById('expense-form').addEventListener('submit', function(even
     if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
         const expense = { name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory };
         addExpense(expense);
+        showAlert(`Added expense: ${expenseName} - ₹${expenseAmount}`);
         updateTotal();
         displaySummary();
         this.reset();
     }
 });
+
+function showAlert(message) {
+    const alertMessage = document.getElementById('alert-message');
+    alertMessage.innerText = message;
+    alertMessage.style.display = 'block';
+
+    setTimeout(() => {
+        alertMessage.style.opacity = '0'; // Start fading out
+        setTimeout(() => {
+            alertMessage.style.display = 'none'; // Hide after fade out
+            alertMessage.style.opacity = '1'; // Reset opacity for next alert
+        }, 500); // Match this duration to the CSS transition duration
+    }, 3000); // Show alert for 3 seconds
+}
 
 document.getElementById('filter-button').addEventListener('click', function() {
     const selectedCategory = document.getElementById('filter-category').value;
@@ -66,16 +81,10 @@ function displayExpenses(filter = '') {
 
     const filteredExpenses = filter ? expenses.filter(exp => exp.category === filter) : expenses;
 
-    if (filteredExpenses.length > 0) {
-        document.getElementById('filter-section').style.display = 'block'; // Show filter section
-    } else {
-        document.getElementById('filter-section').style.display = 'none'; // Hide filter section
-    }
-
     filteredExpenses.forEach((expense, index) => {
         const li = document.createElement('li');
         li.innerHTML = `${expense.name} (₹${expense.amount.toFixed(2)}) - ${expense.category} on ${new Date(expense.date).toLocaleDateString()}
-                        <button style:"color:red" onclick="removeExpense(${index})">Remove</button>`;
+                        <button onclick="removeExpense(${index})">Remove</button>`;
         expenseList.appendChild(li);
     });
 }

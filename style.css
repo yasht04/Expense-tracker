@@ -109,6 +109,18 @@ li button:hover {
     border-radius: 10px;
 }
 
+/* Alert styles */
+.alert {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #28a745; /* Green border */
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    border-radius: 5px;
+    text-align: center;
+    transition: opacity 0.5s ease; /* Smooth transition for fade out */
+}
+
 /* Toggle Styles */
 .toggle {
     position: relative;
