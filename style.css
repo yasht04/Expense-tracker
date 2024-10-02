@@ -1,7 +1,8 @@
 body {
-    font-family: trebuchet ms, helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 20px;
+    background-color: #e9ecef; /* Light background */
     transition: background 0.3s, color 0.3s;
 }
 
@@ -11,60 +12,58 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: white; /* White container */
     transition: background 0.3s, color 0.3s;
 }
 
 body.dark-mode {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+    background-color: #1a1a1a; /* Dark background */
 }
 
 .container.dark-mode {
-    background: #2c2c2c;
+    background: #2c2c2c; /* Darker container */
 }
 
-body:not(.dark-mode) {
-    background-color: #e9ecef;
-    color: #000;
-}
-
-.container:not(.dark-mode) {
-    background: white;
+/* Text colors for light mode */
+h1, h2, h3, p {
+    color: #2c3e50; /* Darker blue for light mode */
 }
 
 h1, h2, h3 {
     text-align: center;
-    color: #000033;
     margin-bottom: 20px;
 }
+
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
-    color: #f8c94c;
+    color: #f8c94c; /* Gold for dark mode */
 }
 
-form, #filter-category {
+form {
     display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
 input, select {
     padding: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px; /* Add margin at the bottom */
     border: 1px solid #ced4da;
     border-radius: 5px;
-    width: 23%;
-    transition: border-color 0.3s;
+    width: calc(23% - 10px); /* Ensure consistent width with spacing */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Add box-shadow transition */
 }
 
 input:focus, select:focus {
-    border-color: #f8c94c;
+    border-color: #f8c94c; /* Gold focus border */
+    box-shadow: 0 0 5px rgba(248, 201, 76, 0.5); /* Shadow effect */
 }
 
 button {
     padding: 14px;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 5px; /* Slightly rounded corners */
     cursor: pointer;
     width: 10%;
     transition: background-color 0.3s, transform 0.2s;
@@ -73,14 +72,26 @@ button {
 li {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #dee2e6;
+    padding: 15px; /* Increased padding */
+    border: 1px solid #dee2e6; /* Border for list items */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px; /* Space between items */
+    transition: transform 0.2s; /* Smooth transition on hover */
+    color: #2c3e50; /* Default text color for light mode */
+}
+
+body.dark-mode li {
+    color: #f8c94c; /* Gold text color for list items in dark mode */
+}
+
+li:hover {
+    transform: translateY(-2px); /* Lift effect on hover */
 }
 
 li button {
     background-color: #dc3545; /* Red for remove buttons */
     border-radius: 5px;
-    border: none;
+    border: none; /* Remove border */
     color: white; /* Text color */
     padding: 5px 10px; /* Adjust padding */
     cursor: pointer; /* Pointer cursor on hover */
@@ -132,7 +143,7 @@ li button:hover {
 }
 
 .moon {
-    color: #f8c94c;
+    color: #f8c94c; /* Color for moon */
     opacity: 0; /* Initially hidden */
 }
 
