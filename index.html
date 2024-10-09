@@ -6,6 +6,7 @@
     <title>Personal Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -22,9 +23,9 @@
                 </span>
             </label>
         </div>
-
+        
         <div id="alert-message" class="alert" style="display: none;"></div>
-
+        
         <form id="expense-form">
             <input type="text" id="expense-name" placeholder="Expense Name" required>
             <input type="number" id="expense-amount" placeholder="Amount" required>
@@ -59,9 +60,11 @@
         <div id="expense-summary"></div>
         
         <h3 id="spending-trends-heading">Spending Trends</h3>
-<canvas id="expense-chart" width="400" height="200"></canvas>
+        <canvas id="expense-chart" width="400" height="200"></canvas>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="work.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
     
 </body>
 </html>
