@@ -244,10 +244,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Expense Amount:', expenseAmount);
             console.log('Expense Date:', expenseDate);
             console.log('Expense Category:', expenseCategory);
-            if (!expenseName || isNaN(expenseAmount) || expenseAmount <= 0 || !expenseDate || !expenseCategory) {
-                showAlert('Please fill out all fields correctly.');
-                return;
-            }
+            // if (!expenseName || isNaN(expenseAmount) || expenseAmount <= 0 || !expenseDate || !expenseCategory) {
+            //     showAlert('Please fill out all fields correctly.');
+            //     return;
+            // }
             const expense = {
                 name: expenseName,
                 amount: expenseAmount,
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     async function removeExpensed(index) {
         const expense = expenses[index];
-        await removeExpenseFromDB(expense.id); // Remove from Supabase
+        await removeExpenseFromDB(expense.id);
         expenses.splice(index, 1);
         localStorage.setItem('expenses', JSON.stringify(expenses));
         displayExpenses();
