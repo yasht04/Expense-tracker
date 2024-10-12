@@ -98,7 +98,7 @@ function editExpense(index) {
     removeExpense(index); // Remove the expense from the array for now
 }
 
-document.getElementById('expense-form').addEventListener('submit', function(event) {
+document.getElementById('expense-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const expenseName = document.getElementById('expense-name').value;
     const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
@@ -109,8 +109,8 @@ document.getElementById('expense-form').addEventListener('submit', function(even
         const expense = { name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory };
         expenses.push(expense);
         localStorage.setItem('expenses', JSON.stringify(expenses));
-        displayExpenses();
         updateTotal();
+        displayExpenses();
         displaySummary();
         updateChart(); // Update the chart with new data
         this.reset();
@@ -169,7 +169,7 @@ function showToast(message) {
 }
 
 // Call showToast in your event handlers
-document.getElementById('expense-form').addEventListener('submit', function(event) {
+document.getElementById('expense-form').addEventListener('submit', function (event) {
     // ... existing code ...
     showToast('Expense added successfully!');
 });
@@ -177,86 +177,114 @@ document.getElementById('expense-form').addEventListener('submit', function(even
 
 
 // const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-const SUPABASE_URL = 'https://kmhqitfsrgcxdpnmtyte.supabase.co';
-const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttaHFpdGZzcmdjeGRwbm10eXRlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyODQ0NjA1MywiZXhwIjoyMDQ0MDIyMDUzfQ.bOrVrJtT10KF3tARnokjfYQipDCW1FH3vGR2SyRGJR4';
-const database = supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
+document.addEventListener('DOMContentLoaded', () => {
+    const SUPABASE_URL = 'https://kmhqitfsrgcxdpnmtyte.supabase.co';
+    const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttaHFpdGZzcmdjeGRwbm10eXRlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyODQ0NjA1MywiZXhwIjoyMDQ0MDIyMDUzfQ.bOrVrJtT10KF3tARnokjfYQipDCW1FH3vGR2SyRGJR4';
+    const database = supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
+    let expenses = [];
+    function showAlert(message, isError = true) {
+        const alertMessage = document.getElementById('alert-message');
+        alertMessage.innerHTML = message;
+        alertMessage.style.display = 'block';
+        alertMessage.className = isError ? 'alert alert-error' : 'alert alert-success';
 
-// Fetch expenses from Supabase
-async function fetchExpenses() {
-    const { data, error } = await database
-        .from('expenses') // Replace with your actual table name
-        .select('*');
+        setTimeout(() => {
+            alertMessage.style.display = 'none';
+        }, 3000);
+    }
+    async function fetchExpenses() {
+        const { data, error } = await database
+            .from('expenses')
+            .select('*');
 
-    if (error) {
-        console.error('Error fetching expenses:', error);
-    } else {
-        expenses = data;
+        if (error) {
+            console.error('Error fetching expenses:', error);
+            showAlert('Error fetching expenses. Please try again.');
+        } else {
+            expenses = data;
+            if (expenses.length === 0) {
+                showAlert('No expenses found.', false);
+            } else {
+                localStorage.setItem('expenses', JSON.stringify(expenses));
+                displayExpenses();
+                updateTotal();
+                updateChart();
+                displaySummary();
+            }
+        }
+    }
+
+    async function addExpense(expense) {
+        try {
+            const { data, error } = await database
+                .from('expenses')
+                .insert([expense]);
+
+            if (error) {
+                console.error('Error adding expense:', error.message);
+                showAlert('Error adding expense: ' + error.message);
+            } else {
+                console.log('Expense added:', data);
+                expenses.push(expense);
+                localStorage.setItem('expenses', JSON.stringify(expenses));
+                displayExpenses();
+                updateTotal();
+                displaySummary();
+                updateChart();
+                showAlert('Expense added successfully!', false);
+            }
+        } catch (err) {
+            console.error('Unexpected error:', err);
+            showAlert('An unexpected error occurred: ' + err.message);
+        }
+    }
+
+    async function removeExpenseFromDB(id) {
+        const { data, error } = await database
+            .from('expenses')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error('Error removing expense:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('expense-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const expenseName = document.getElementById('expense-name').value.trim();
+            console.log(expenseName);
+            const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
+            const expenseDate = document.getElementById('expense-date').value;
+            const expenseCategory = document.getElementById('expense-category').value;
+            console.log('Expense Name:', expenseName);
+            console.log('Expense Amount:', expenseAmount);
+            console.log('Expense Date:', expenseDate);
+            console.log('Expense Category:', expenseCategory);
+            if (!expenseName || isNaN(expenseAmount) || expenseAmount <= 0 || !expenseDate || !expenseCategory) {
+                showAlert('Please fill out all fields correctly.');
+                return;
+            }
+            const expense = {
+                name: expenseName,
+                amount: expenseAmount,
+                date: new Date(expenseDate).toISOString(),
+                category: expenseCategory
+            };
+            addExpense(expense);
+            this.reset();
+        });
+    });
+    async function removeExpensed(index) {
+        const expense = expenses[index];
+        await removeExpenseFromDB(expense.id); // Remove from Supabase
+        expenses.splice(index, 1);
         localStorage.setItem('expenses', JSON.stringify(expenses));
         displayExpenses();
         updateTotal();
-        updateChart();
-        displaySummary();
-    }
-}
-
-// Add expense to Supabase
-async function addExpense(expense) {
-    const { data, error } = await database
-        .from('expenses') // Replace with your actual table name
-        .insert([expense]);
-
-    if (error) {
-        console.error('Error adding expense:', error);
-    }
-}
-
-// Remove expense from Supabase
-async function removeExpenseFromDB(id) {
-    const { data, error } = await database
-        .from('expenses') // Replace with your actual table name
-        .delete()
-        .eq('id', id); // Assuming your table has an 'id' column
-
-    if (error) {
-        console.error('Error removing expense:', error);
-    }
-}
-
-// Event listener for form submission
-document.getElementById('expense-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const expenseName = document.getElementById('expense-name').value;
-    const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
-    const expenseDate = document.getElementById('expense-date').value;
-    const expenseCategory = document.getElementById('expense-category').value;
-
-    if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
-        const expense = { name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory };
-        await addExpense(expense); // Add to Supabase
-        expenses.push(expense); // Also update local expenses
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-        displayExpenses();
-        updateTotal();
         displaySummary();
         updateChart();
-        this.reset();
-        showToast('Expense added successfully!');
     }
+    fetchExpenses();
 });
-
-// Remove expense function
-async function removeExpensed(index) {
-    const expense = expenses[index];
-    await removeExpenseFromDB(expense.id); // Remove from Supabase
-    expenses.splice(index, 1);
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-    displayExpenses();
-    updateTotal();
-    displaySummary();
-    updateChart(); // Update the chart after removal
-}
-
-// Initial fetch of expenses
-fetchExpenses();
-
-// Additional existing code...
