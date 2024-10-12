@@ -7,23 +7,17 @@ const container = document.querySelector('.container');
 toggleButton.addEventListener('change', () => {
     const isDarkMode = body.classList.toggle('dark-mode');
     container.classList.toggle('dark-mode');
-    updateChart(); // Update the chart with the current data
+    updateChart();
 });
 
 function updateChart() {
     const summaryData = {};
-
-    // Get the spending trends heading element
     const spendingTrendsHeading = document.getElementById('spending-trends-heading');
-
-    // Check if there are expenses
     if (expenses.length === 0) {
-        // Hide the chart and the heading
         document.getElementById('expense-chart').style.display = 'none';
         spendingTrendsHeading.style.display = 'none';
-        return; // Exit the function
+        return;
     } else {
-        // Show the chart and the heading if there are expenses
         document.getElementById('expense-chart').style.display = 'block';
         spendingTrendsHeading.style.display = 'block';
     }
@@ -95,7 +89,7 @@ function editExpense(index) {
     document.getElementById('expense-date').value = expense.date;
     document.getElementById('expense-category').value = expense.category;
 
-    removeExpense(index); // Remove the expense from the array for now
+    removeExpense(index); 
 }
 
 document.getElementById('expense-form').addEventListener('submit', function (event) {
@@ -112,7 +106,7 @@ document.getElementById('expense-form').addEventListener('submit', function (eve
         updateTotal();
         displayExpenses();
         displaySummary();
-        updateChart(); // Update the chart with new data
+        updateChart(); 
         this.reset();
     }
 });
@@ -123,7 +117,7 @@ function removeExpense(index) {
     displayExpenses();
     updateTotal();
     displaySummary();
-    updateChart(); // Update the chart after removal
+    updateChart();
 }
 
 function updateTotal() {
@@ -148,10 +142,6 @@ function displaySummary() {
         summaryDiv.appendChild(p);
     }
 }
-
-// Dark mode functionality
-
-// Initial display
 displayExpenses();
 updateTotal();
 updateChart();
@@ -168,15 +158,9 @@ function showToast(message) {
     }, 4000);
 }
 
-// Call showToast in your event handlers
 document.getElementById('expense-form').addEventListener('submit', function (event) {
-    // ... existing code ...
     showToast('Expense added successfully!');
 });
-
-
-
-// const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 document.addEventListener('DOMContentLoaded', () => {
     const SUPABASE_URL = 'https://kmhqitfsrgcxdpnmtyte.supabase.co';
     const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttaHFpdGZzcmdjeGRwbm10eXRlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyODQ0NjA1MywiZXhwIjoyMDQ0MDIyMDUzfQ.bOrVrJtT10KF3tARnokjfYQipDCW1FH3vGR2SyRGJR4';
@@ -214,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function addExpense(expense) {
+    async function addExpenses(expense) {
         try {
             const { data, error } = await database
                 .from('expenses')
@@ -252,9 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('expense-form').addEventListener('submit', async function (event) {
             event.preventDefault();
-
             const expenseName = document.getElementById('expense-name').value.trim();
-            console.log(expenseName);
             const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
             const expenseDate = document.getElementById('expense-date').value;
             const expenseCategory = document.getElementById('expense-category').value;
@@ -272,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 date: new Date(expenseDate).toISOString(),
                 category: expenseCategory
             };
-            addExpense(expense);
+            addExpenses(expense);
             this.reset();
         });
     });
