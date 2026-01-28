@@ -4,132 +4,14 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 function getUserId() {
     let userId = localStorage.getItem('user_id');
     if (!userId) {
-        userId = 'user_' + Date.now(); // Generate a unique ID
+        userId = 'user_' + Date.now();
         localStorage.setItem('user_id', userId);
     }
     return userId;
 }
 
 
-// document.getElementById('expense-form').addEventListener('submit', async (event) => {
-//     event.preventDefault();
-//     const name = document.getElementById('expense-name').value;
-//     const amount = document.getElementById('expense-amount').value;
-//     const date = document.getElementById('expense-date').value;
-//     const category = document.getElementById('expense-category').value;
-//     const { data, error } = await db
-//         .from('users_1')
-//         .insert([{ name, amount, date, category }]);
-// });
-// document.getElementById('expense-form').addEventListener('submit', async function (event) {
-//     event.preventDefault();
-//     const expenseName = document.getElementById('expense-name').value;
-//     const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
-//     const expenseDate = document.getElementById('expense-date').value;
-//     const expenseCategory = document.getElementById('expense-category').value;
 
-//     if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
-//         const { data, error } = await db
-//             .from('users_1')
-//             .insert([{ name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory }])
-//             .single();
-
-//         if (error) {
-//             console.error('Error adding expense to Supabase:', error);
-//             showAlert('Error adding expense. Please try again.', true);
-//             return;
-//         }
-//         expenses.push({ ...data, amount: expenseAmount }); 
-//         localStorage.setItem('expenses', JSON.stringify(expenses));
-//         updateTotal();
-//         displayExpenses();
-//         displaySummary();
-//         updateChart();
-//         this.reset();
-//         showToast('Expense added successfully!');
-//     }
-// });
-
-//second code that works
-// document.getElementById('expense-form').addEventListener('submit', async function (event) {
-//     event.preventDefault();
-//     const expenseName = document.getElementById('expense-name').value;
-//     const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
-//     const expenseDate = document.getElementById('expense-date').value;
-//     const expenseCategory = document.getElementById('expense-category').value;
-
-//     if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
-//         const { data, error } = await db
-//             .from('users_1')
-//             .insert([{ name: expenseName, amount: expenseAmount, date: expenseDate, category: expenseCategory }])
-//             .single(); // Use .single() to get the inserted row
-
-//         if (error) {
-//             console.error('Error adding expense to Supabase:', error);
-//             showAlert('Error adding expense. Please try again.', true);
-//             return;
-//         }
-
-//         // Ensure the new expense includes all necessary properties
-//         const newExpense = {
-//             id: data.id, // Assuming `data` includes the new ID
-//             name: data.name,
-//             amount: expenseAmount, // Use the local value for amount
-//             date: expenseDate,
-//             category: expenseCategory
-//         };
-
-//         // Add the new expense to the local array
-//         expenses.push(newExpense);
-//         localStorage.setItem('expenses', JSON.stringify(expenses));
-//         updateTotal();
-//         displayExpenses();
-//         displaySummary();
-//         updateChart();
-//         this.reset();
-//         showToast('Expense added successfully!');
-//     }
-// });
-
-// document.getElementById('expense-form').addEventListener('submit', async function (event) {
-//     event.preventDefault();
-//     const userId = getUserId(); // Get the user ID
-//     const expenseName = document.getElementById('expense-name').value;
-//     const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
-//     const expenseDate = document.getElementById('expense-date').value;
-//     const expenseCategory = document.getElementById('expense-category').value;
-
-//     if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
-//         const { data, error } = await db
-//     .from('users_1')
-//     .insert([{ 
-//         name: expenseName, 
-//         amount: expenseAmount, 
-//         date: expenseDate, 
-//         category: expenseCategory, 
-//         user_id: userId
-//     }])
-//     .single();
-
-
-//         if (error) {
-//             console.error('Error adding expense to Supabase:', error);
-//         } else {
-//             console.log('Inserted Expense:', data);
-//         }
-
-
-//         // Add the new expense to the local array
-//         expenses.push({ ...data, amount: expenseAmount });
-//         localStorage.setItem('expenses', JSON.stringify(expenses));
-//         updateTotal();
-//         displayExpenses(userId); // Pass user ID to display function
-//         displaySummary();
-//         updateChart();
-//         this.reset();
-//         showToast('Expense added successfully!');
-//     }
-// });
 
 document.getElementById('expense-form').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -140,9 +22,7 @@ document.getElementById('expense-form').addEventListener('submit', async functio
     const expenseCategory = document.getElementById('expense-category').value;
 
     if (expenseName && !isNaN(expenseAmount) && expenseDate && expenseCategory) {
-        const userId = getUserId(); // Ensure you have a way to get the user ID
-
-        // Add expense to Supabase
+        const userId = getUserId();
         const { data, error } = await db
             .from('users_1')
             .insert([{ 
@@ -158,8 +38,8 @@ document.getElementById('expense-form').addEventListener('submit', async functio
             showAlert('Error adding expense. Please try again.');
         } else {
             console.log('Expense added:', data);
-            await fetchExpenses(); // Fetch the latest expenses after adding
-            this.reset(); // Reset the form fields
+            await fetchExpenses();
+            this.reset();
         }
     }
 });
@@ -182,11 +62,8 @@ async function fetchExpenses() {
     }
 
     console.log('Raw data fetched from the database:', data);
-
-    // Reset expenses array before processing
     expenses = [];
 
-    // Process the fetched expenses and filter out invalid entries
     expenses = data
         .map(exp => ({
             ...exp,
@@ -196,38 +73,13 @@ async function fetchExpenses() {
 
     console.log('Processed expenses after filtering:', expenses);
 
-    // Store expenses in local storage and display them
     localStorage.setItem('expenses', JSON.stringify(expenses));
     displayExpenses(); // Show the expenses
     updateTotal(); // Update the total expenses
     updateChart(); // Update the chart if necessary
-    displaySummary(); // Update the summary display
+    displaySummary();
 }
 
-
-
-
-
-
-
-//second code that works
-// async function fetchExpenses() {
-//     const { data, error } = await db.from('users_1').select('*');
-//     if (error) {
-//         console.error('Error fetching expenses:', error);
-//         showAlert('Error fetching expenses. Please try again.');
-//     } else {
-//         expenses = data.map(exp => ({
-//             ...exp,
-//             amount: parseFloat(exp.amount) || 0
-//         }));
-//         localStorage.setItem('expenses', JSON.stringify(expenses));
-//         displayExpenses();
-//         updateTotal();
-//         updateChart();
-//         displaySummary();
-//     }
-// }
 let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 let expenseChart;
 const toggleButton = document.getElementById('toggle-dark-mode');
@@ -310,27 +162,6 @@ function displayExpenses() {
     });
 }
 
-
-
-//second code that worked
-// function displayExpenses(filter = '') {
-//     const expenseList = document.getElementById('expense-list');
-//     expenseList.innerHTML = '';
-
-//     const filteredExpenses = filter ? expenses.filter(exp => exp.category === filter) : expenses;
-
-//     filteredExpenses.forEach((expense, index) => {
-//         const li = document.createElement('li');
-//         li.innerHTML = `
-//     ${expense.name} (₹${typeof expense.amount === 'number' ? expense.amount.toFixed(2) : 'Invalid Amount'}) - ${expense.category} on ${new Date(expense.date).toLocaleDateString()}
-//     <div >
-//         <button onclick="editExpense(${index})">Edit</button>
-//         <button onclick="removeExpense(${index})">Remove</button>
-//     </div>`;
-//         expenseList.appendChild(li);
-//     });
-// }
-
 function editExpense(index) {
     const expense = expenses[index];
     document.getElementById('expense-name').value = expense.name;
@@ -360,14 +191,6 @@ document.getElementById('expense-form').addEventListener('submit', function (eve
     }
 });
 
-// function removeExpense(index) {
-//     expenses.splice(index, 1);
-//     localStorage.setItem('expenses', JSON.stringify(expenses));
-//     displayExpenses();
-//     updateTotal();
-//     displaySummary();
-//     updateChart();
-// }
 async function removeExpense(index) {
     const expense = expenses[index];
 

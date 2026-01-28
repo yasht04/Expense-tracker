@@ -1,0 +1,13 @@
+git config
+git init
+git clone
+git status
+git add
+git reset
+git diff
+git diff --stage
+git commit -m ""
+git branch
+git branch [branch name]
+git checkout
+git 
